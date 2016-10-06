@@ -13,7 +13,7 @@
 - jogobtm -> comparacao de ranking BTM entre dois times
 - jogopoisson - > calcula PdG para um jogo, plota a PREVIEW de um jogo
 - jogoxG -> observa o xG de um jogo, bem como sua evolucao por tempo
-- lmgol -> computa modelo para PdG de jogo baseado em xG e xGC dos dois times
+- modeloPdG -> computa modelo para PdG de jogo baseado em xG e xGC dos dois times
 - minutos -> plota evolucao xG por tempo
 - newresultadoscasa -> matriz de resultados com times da casa como linha
 - ogol -> capta dados do site ogol
