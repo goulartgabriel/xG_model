@@ -1,4 +1,4 @@
-lm.gol <- function(rodadas, type = 'bayes.glm', peso, casa = F){
+projecao.gol <- function(rodadas, type = 'bayes.glm', peso, casa = F){
   source("br16.R")
   source("setupxG.R")
   source("xGtimes.R")

@@ -43,7 +43,7 @@ source("jogopoisson.R")
 source("minutos.R")
 source("probabilidades.R")
 source("projecaopontos.R")
-source("lmgol.R")
+source("modeloPdG.R")
 source('simplot.R')
 
 # SETUP xG ------
@@ -100,7 +100,7 @@ bayes.xG=bayesglm(Gol~ .,
                                                          ))],
                   family=binomial, drop.unused.levels = F )
 
-models = lm.gol(rodadas = rodadas, type = 'bayes.glm', peso = 0)
+models = projecao.gol(rodadas = rodadas, type = 'bayes.glm', peso = 0)
 model = bayes.xG
 campeonato = xGtimes(dados = xG.chutes, model = model, rodadas = 28, 
                      rodada.inicial = 1,threshold = threshold, 
@@ -301,10 +301,10 @@ fora = bra16$jogos[bra16$jogos$Rodada == rodadas,]
 fora = as.character(fora$Fora)
 
 
-source('lmgol.R')
+source('modeloPdG.R')
 rodadas = 29
 
-models = lm.gol(rodadas = (rodadas-1), type = 'bayes.glm', peso = .7, casa = F)
+models = projecao.gol(rodadas = (rodadas-1), type = 'bayes.glm', peso = .7, casa = F)
 
 casa = c('Flamengo','Sport', 'América','Corinthians','Internacional','Vitória','Santos')
 fora = c('Santa Cruz','São Paulo','Palmeiras','Atlético MG','Coritiba','Grêmio','Fluminense')
