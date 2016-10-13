@@ -23,13 +23,17 @@ cores <- function(dataframe){
       #dataframe$paletta[i] = "#424242"
     }
     if(dataframe$Equipe[i] == 'Flamengo'){
-      dataframe$paletta[i] = "firebrick"
+      #dataframe$paletta[i] = "firebrick"
+      dataframe$paletta[i] = "#D14141"
+      
     }
     if(dataframe$Equipe[i] == 'Atlético PR'){
       dataframe$paletta[i] = "#87313C"
     }
     if(dataframe$Equipe[i] == 'Fluminense'){
-      dataframe$paletta[i] = "#A82A4A"
+      #dataframe$paletta[i] = "#A82A4A"
+      dataframe$paletta[i] = "#7A3254"
+      
     }
     if(dataframe$Equipe[i] == 'Ponte Preta'){
       dataframe$paletta[i] = "#858585"
@@ -67,6 +71,12 @@ cores <- function(dataframe){
     }
     if(dataframe$Equipe[i] == 'América'){
       dataframe$paletta[i] = "#33B06F"
+    }
+    if(dataframe$Equipe[i] == 'Brasil'){
+      dataframe$paletta[i] = "gold2"
+    }
+    if(dataframe$Equipe[i] == 'Bolívia'){
+      dataframe$paletta[i] = "#0D7A52"
     }
   }
   return(dataframe)  

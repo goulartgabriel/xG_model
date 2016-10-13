@@ -4,7 +4,7 @@ poisson.pred <- function(casa, fora = NULL, rodadas, models, type, momentum, pes
   source("setupxG.R")
   source('cores.R')
   source('probabilidades.R')
-  source("lmgol.R")
+  source("modeloPdG.R")
   source('evolucaoxG.R')
   source('correlacaojogo.R')
   library(cowplot)
@@ -48,19 +48,21 @@ poisson.pred <- function(casa, fora = NULL, rodadas, models, type, momentum, pes
     index.casa = which(times == casa[i])
     index.fora = which(times == fora[i])
     
-    df.casa =  data.frame(xG.time.casa.m = xG.data$xG[index.casa],
-                          xGC.time.fora.m = xG.data$xGC[index.fora],
-                          xG.time.fora.m = xG.data$xG[index.fora],
-                          xGC.time.casa.m = xG.data$xGC[index.casa],
+    df.casa =  data.frame(xG.pre = xG.data$xG[index.casa],
+                          xGC.adv.pre = xG.data$xGC[index.fora],
+                          xG.adv.pre = xG.data$xG[index.fora],
+                          xGC.pre = xG.data$xGC[index.casa],
                           Casa = times[index.casa],
-                          Fora = times[index.fora])
-    p.casa = exp(predict(lm.Gol.Casa,df.casa))
-    df.fora =  data.frame(xG.time.casa.m = xG.data$xG[index.casa],
-                          xGC.time.fora.m = xG.data$xGC[index.fora],
-                          xG.time.fora.m = xG.data$xG[index.fora],
-                          xGC.time.casa.m = xG.data$xGC[index.casa],
                           Fora = times[index.fora],
-                          Casa = times[index.casa])
+                          Mando = 'Casa')
+    p.casa = exp(predict(lm.Gol.Casa,df.casa))
+    df.fora =  data.frame(xG.adv.pre = xG.data$xG[index.casa],
+                          xGC.pre = xG.data$xGC[index.fora],
+                          xG.pre = xG.data$xG[index.fora],
+                          xGC.adv.pre = xG.data$xGC[index.casa],
+                          Fora = times[index.fora],
+                          Casa = times[index.casa],
+                          Mando = 'Fora')
     p.fora = exp(predict(lm.Gol.Fora,df.fora))
     p.casa = round(p.casa,2)
     p.fora = round(p.fora,2)

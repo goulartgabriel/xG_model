@@ -1,4 +1,4 @@
-projecao.gol <- function(rodadas, type = 'bayes.glm', peso, casa = F){
+projecao.gol <- function(rodadas, type = 'bayes.glm', peso, casa = TRUE){
   source("br16.R")
   source("setupxG.R")
   source("xGtimes.R")
@@ -105,30 +105,60 @@ projecao.gol <- function(rodadas, type = 'bayes.glm', peso, casa = F){
       
       }
   }
-  if(casa == FALSE){
-    lm.Gol.Casa = glm(Gol.C~.,data=jogos[ , (names(jogos) %in% c('Gol.C','xG.time.casa.m',
-                                                                 'xGC.time.fora.m','xG.time.fora.m',
-                                                                 'xGC.time.casa.m'
+  jogos.casa = data.frame(Rodada = jogos$Rodada,
+                          Equipe = times[jogos$Casa],
+                          Gol = jogos$Gol.C,
+                          xG.jogo = jogos$xG.jogo.casa,
+                          xG.pre = jogos$xG.time.casa.m,
+                          xG.adv.pre = jogos$xG.time.fora.m,
+                          xGC.pre = jogos$xGC.time.casa.m, 
+                          xGC.adv.pre = jogos$xGC.time.fora.m
+  )
+  
+  jogos.fora = data.frame(Rodada = jogos$Rodada,
+                          Equipe = times[jogos$Fora],
+                          Gol = jogos$Gol.F,
+                          xG.jogo = jogos$xG.jogo.fora,
+                          xG.pre = jogos$xG.time.fora.m,
+                          xG.adv.pre = jogos$xG.time.casa.m,
+                          xGC.pre = jogos$xGC.time.fora.m, 
+                          xGC.adv.pre = jogos$xGC.time.casa.m
+  )
+  
+  
+  df.sem.mando = data.frame(Rodada = c(jogos$Rodada,jogos$Rodada),
+                            Equipe = times[c(jogos$Casa,jogos$Fora)],
+                            Gol = c(jogos$Gol.C,jogos$Gol.F),
+                            xG.jogo = c(jogos$xG.jogo.casa,jogos$xG.jogo.fora),
+                            xG.pre = c(jogos$xG.time.casa.m,jogos$xG.time.fora.m),
+                            xG.adv.pre = c(jogos$xG.time.fora.m,jogos$xG.time.casa.m),
+                            xGC.pre = c(jogos$xGC.time.casa.m, jogos$xGC.time.fora.m),
+                            xGC.adv.pre = c(jogos$xGC.time.fora.m,jogos$xGC.time.casa.m),
+                            Mando = c(rep('Casa',length(jogos$Rodada)),rep('Fora',length(jogos$Rodada)))
+                            
+  )
+
+  
+  if(casa == TRUE){
+    lm.Gol.Casa = glm(Gol~.,data=jogos.casa[ , (names(jogos.casa) %in%c('Gol','xG.pre',
+                                                                          'xGC.pre','xG.adv.pre',
+                                                                          'xGC.adv.pre'
     ))],
     family = quasipoisson )
     
-    lm.Gol.Fora = glm(Gol.F~.,data=jogos[ , (names(jogos) %in% c('Gol.F','xG.time.casa.m',
-                                                                 'xGC.time.fora.m','xG.time.fora.m',
-                                                                 'xGC.time.casa.m'
+    lm.Gol.Fora = glm(Gol~.,data=jogos.fora[ , (names(jogos.fora)%in%c('Gol','xG.pre',
+                                                                       'xGC.pre','xG.adv.pre',
+                                                                       'xGC.adv.pre'
     ))],
     family = quasipoisson)
   } else{
-    lm.Gol.Casa = glm(Gol.C~.,data=jogos[ , (names(jogos) %in% c('Gol.C','xG.time.casa.m',
-                                                                 'xGC.time.fora.m','xG.time.fora.m',
-                                                                 'xGC.time.casa.m','Casa'
+    lm.Gol.Casa = glm(Gol~.,data=df.sem.mando[ , (names(df.sem.mando) %in% c('Gol','xG.pre',
+                                                                 'xGC.pre','xG.adv.pre',
+                                                                 'xGC.adv.pre'
     ))],
-    family = quasipoisson)
+    family = quasipoisson )
     
-    lm.Gol.Fora = glm(Gol.F~.,data=jogos[ , (names(jogos) %in% c('Gol.F','xG.time.casa.m',
-                                                                 'xGC.time.fora.m','xG.time.fora.m',
-                                                                 'xGC.time.casa.m','Fora'
-    ))],
-    family = quasipoisson)
+    lm.Gol.Fora = lm.Gol.Casa
   }
   jogos$PxG.casa = 0
   jogos$PxG.fora = 0
@@ -136,22 +166,24 @@ projecao.gol <- function(rodadas, type = 'bayes.glm', peso, casa = F){
   for(i in 9:rodadas){
     index.rodada = which(jogos$Rodada == i)
     for(j in index.rodada){
-      df.casa =  data.frame(xG.time.casa.m = jogos$xG.time.casa.m[j],
-                            xGC.time.fora.m = jogos$xGC.time.fora.m[j],
-                            xG.time.fora.m = jogos$xG.time.fora.m[j],
-                            xGC.time.casa.m = jogos$xGC.time.casa.m[j],
+      df.casa =  data.frame(xG.pre = jogos$xG.time.casa.m[j],
+                            xGC.adv.pre = jogos$xGC.time.fora.m[j],
+                            xG.adv.pre = jogos$xG.time.fora.m[j],
+                            xGC.pre = jogos$xGC.time.casa.m[j],
                             Casa = jogos$Casa[j],
-                            Fora = jogos$Fora[j])
+                            Fora = jogos$Fora[j],
+                            Mando = 'Casa')
                             
                             
                           
       p.casa = exp(predict(lm.Gol.Casa,df.casa))
-      df.fora =  data.frame(xG.time.casa.m = jogos$xG.time.casa.m[j],
-                            xGC.time.fora.m = jogos$xGC.time.fora.m[j],
-                            xG.time.fora.m = jogos$xG.time.fora.m[j],
-                            xGC.time.casa.m = jogos$xGC.time.casa.m[j],
+      df.fora =  data.frame(xG.adv.pre = jogos$xG.time.casa.m[j],
+                            xGC.pre = jogos$xGC.time.fora.m[j],
+                            xG.pre = jogos$xG.time.fora.m[j],
+                            xGC.adv.pre = jogos$xGC.time.casa.m[j],
                             Casa = jogos$Casa[j],
-                            Fora = jogos$Fora[j])
+                            Fora = jogos$Fora[j],
+                            Mando = 'Fora')
       p.fora = exp(predict(lm.Gol.Fora,df.fora))
       p.casa = round(p.casa,2)
       p.fora = round(p.fora,2) 

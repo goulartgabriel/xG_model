@@ -1,4 +1,4 @@
-rodadas = 28
+rodadas = 30
 type = 'bayes.glm'
 source("simulacao.R")
 source("simplot.R")
@@ -100,9 +100,9 @@ bayes.xG=bayesglm(Gol~ .,
                                                          ))],
                   family=binomial, drop.unused.levels = F )
 
-models = projecao.gol(rodadas = rodadas, type = 'bayes.glm', peso = 0)
+#models = projecao.gol(rodadas = rodadas, type = 'bayes.glm', peso = 0)
 model = bayes.xG
-campeonato = xGtimes(dados = xG.chutes, model = model, rodadas = 28, 
+campeonato = xGtimes(dados = xG.chutes, model = model, rodadas = rodadas, 
                      rodada.inicial = 1,threshold = threshold, 
                      type = 'bayes.glm', momentum = 5, peso = .25)
 campeonato$xG.plot
@@ -264,8 +264,8 @@ bra16 = br16(rodadas = rodadas)
 casa = bra16$jogos[bra16$jogos$Rodada == rodadas,]
 casa = as.character(casa$Casa)
 
-casa = c('Fluminense','São Paulo','Botafogo','Internacional')
-jogoxG = jogo.xG(data = xG.chutes, model = model, rodada = 28, 
+casa = c('Figueirense')
+jogoxG = jogo.xG(data = xG.chutes, model = model, rodada = 29, 
                  casa = casa, type = 'bayes.glm', tempo = T)
 jogoxG$plots.tempo
 
@@ -288,7 +288,7 @@ png("Plot3.png", width = 9.5, height = 19.5, units = 'in', res = 400)
 grid.draw(g1)# Make plot
 dev.off()
 jogoxG$plots.tempo
-png("Plot3.png", width = 8, height = 7, units = 'in', res = 400)
+png("APlot3.png", width = 8, height = 7, units = 'in', res = 400)
 plot(jogoxG$plots.tempo[[1]])# Make plot
 dev.off()
 #
@@ -302,17 +302,17 @@ fora = as.character(fora$Fora)
 
 
 source('modeloPdG.R')
-rodadas = 29
+rodadas = 30
 
 models = projecao.gol(rodadas = (rodadas-1), type = 'bayes.glm', peso = .7, casa = F)
 
-casa = c('Flamengo','Sport', 'América','Corinthians','Internacional','Vitória','Santos')
-fora = c('Santa Cruz','São Paulo','Palmeiras','Atlético MG','Coritiba','Grêmio','Fluminense')
 
+casa = c('Palmeiras','Atlético MG','Ponte Preta','Fluminense','São Paulo','Grêmio')
+fora = c('Cruzeiro','América','Vitória','Flamengo','Santos','Atlético PR')
 source('jogopoisson.R')
 jogopoisson = poisson.pred(rodadas = (rodadas-1), casa = casa, fora = fora,
                            models = models, type = 'bayes.glm',
-                           momentum = 5, peso = .65)
+                           momentum = 5, peso = .6)
 
 jogopoisson$probs
 
@@ -325,8 +325,8 @@ jogopoisson$probs
 
 
 
-png("Plot3.png", width = 8, height = 12, units = 'in', res = 400)
-grid.draw(jogopoisson$plots[[1]])# Make plot
+png("APlot3.png", width = 8, height = 12, units = 'in', res = 400)
+grid.draw(jogopoisson$plots[[4]])# Make plot
 dev.off()
 #
 
