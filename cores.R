@@ -78,6 +78,15 @@ cores <- function(dataframe){
     if(dataframe$Equipe[i] == 'Bolívia'){
       dataframe$paletta[i] = "#0D7A52"
     }
+    if(dataframe$Equipe[i] == 'Venezuela'){
+      dataframe$paletta[i] = "#7A3254"
+    }
+    if(dataframe$Equipe[i] == 'Colômbia'){
+      dataframe$paletta[i] = "#D14141"
+    }
+    if(dataframe$Equipe[i] == 'Equador'){
+      dataframe$paletta[i] = "dodgerblue4"
+    }
   }
   return(dataframe)  
   

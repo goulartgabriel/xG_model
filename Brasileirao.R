@@ -36,6 +36,7 @@ source("teamratingbtm.R")
 source("simulacaobtm.R")
 source("correlacao.R")
 source("setupxG.R")
+source("setupxgbr.R")
 source("simulacaoxG.R")
 source("boxsim.R")
 source("jogoxG.R")
@@ -257,6 +258,65 @@ dev.off()
 
 png("defenseeff.jpg", width = 7, height = 7, units = 'in', res = 500)
 plot(graficos.xG$chutes.golsC) # Make plot
+dev.off()
+
+# BRASIL -----
+threshold = 0.3
+source("setupxgbr.R")
+
+xG.br = setup.xG.Brasil()
+xG.br = xG.br$xG.chutes
+times = levels(xG$Time)
+
+casa = c('Equador')
+gj.xG = 0
+gj.xA = 0
+pc.xG = 0
+pc.xA = 0
+jesus = data.frame(Adv = rep(c('Ecuador','Colombia','Bolivia','Venezuela'),2),
+                   value = c(gj.xG,gj.xA),
+                   tipo = c(rep('xG',4),rep('xGC',4)))
+                   
+for (i in 1:4){
+  bibi = xG.br[xG.br$Jogador == 'Philippe Coutinho' & xG.br$Rodada == i ,]
+  pc.xG[i] = sum(predict(model,bibi,type="response"))
+  bibi = xG.br[xG.br$Jogador.ASS == 'Philippe Coutinho' & xG.br$Rodada == i ,]
+  if (nrow(bibi) == 0){
+    pc.xA[i] = 0
+  } else{
+    pc.xA[i] = sum(predict(model,bibi,type="response"))
+  }
+}
+
+
+ggplot(data = jesus, aes(x = factor(Adv,levels=unique(Adv)), y = value, group = tipo, colour = tipo),
+       size = 1.8, alpha = 0.85)+
+  geom_line()+
+  xlab('')+
+  ylab('')+
+  theme_classic()+
+  theme(
+        text=element_text(family="Avenir"),
+        axis.line.y = element_line(
+          colour = "gray26"),
+        axis.line.x = element_line(
+          colour = "white"),
+        axis.ticks.y = element_line(color="gray26"),
+        axis.text.x = element_text(size = 12, color = 'gray26'),
+        axis.text.y = element_text(size = 12, color = 'gray26'),
+        axis.title.y=element_text(size=12, color = 'gray26'),
+        axis.title.x=element_text(size=12, color = 'gray26'),
+        legend.title = element_text(color = 'white'),
+        panel.grid.major = element_line(colour = "gray26",size = .03),
+        panel.grid.minor = element_line(colour = "gray26",
+                                        linetype = 'dashed',size = .045))+
+
+jogoxG = jogo.xG(data = xG.br, model = model, rodada = 2, 
+                 casa = 'Brasil', type = 'bayes.glm', tempo = T)
+jogoxG$plots.tempo
+
+png("Colombia.png", width = 8, height = 7, units = 'in', res = 400)
+plot(jogoxG$plots.tempo[[1]])# Make plot
 dev.off()
 
 # JOGO XG ------

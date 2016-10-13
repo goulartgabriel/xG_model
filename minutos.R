@@ -88,8 +88,8 @@ minutos <- function(data, prediction.casa, prediction.fora, casa, fora){
     
         val.casa = paste('(',max(sum.casa),')',sep="")
         val.fora = paste('(',max(sum.fora),')',sep="")
-        str.casa = paste(casa,golc,val.casa,sep=" ")
-        str.fora = paste(fora,golf,val.fora,sep=" ")
+        str.casa = paste('BRAZIL',golc,val.casa,sep=" ") #casa
+        str.fora = paste('COLOMBIA',golf,val.fora,sep=" ") #fora
         str = paste(str.casa,'\n',str.fora,sep=" ")
         
         
@@ -98,7 +98,7 @@ minutos <- function(data, prediction.casa, prediction.fora, casa, fora){
       geom_line(data = xG.minuto, aes(x = minuto, y = xG, colour = factor(Equipe,levels=unique(Equipe))),
                 size = 1.8, alpha = 0.85)+
       scale_color_manual(values=paletta)+
-      scale_x_continuous(name = "tempo",breaks = seq(0, 90, 15))+
+      scale_x_continuous(name = "time",breaks = seq(0, 90, 15))+
       theme_classic()+
       geom_point(data = df.gols, aes(x = minuto, y = xG,colour = factor(Equipe,levels=unique(Equipe))),
                  size = 5)+
@@ -117,7 +117,7 @@ minutos <- function(data, prediction.casa, prediction.fora, casa, fora){
             panel.grid.major = element_line(colour = "gray26",size = .03),
             panel.grid.minor = element_line(colour = "gray26",
                                             linetype = 'dashed',size = .045))+
-      annotate("text", label = 'Pontos representam gols', x =11, y =max(xG.minuto$xG), 
+      annotate("text", label = 'Dots represent goals.', x =11, y =max(xG.minuto$xG), 
                size = 4.2, colour = "gray34",family="Avenir",fontface = "italic")+
       annotate("text", label = '@ProjecaoDeGol', x = 85, y = 0, 
                size = 4.2, colour = "gray34",family="Avenir",fontface = "italic")+
