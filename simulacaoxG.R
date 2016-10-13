@@ -58,18 +58,22 @@ simulacao.xG <- function(rodadas, nsimulacoes, type, momentum, peso, limitado = 
       for(j in 1:20){
         if(i!=j){
           if(is.na(matriz.jogos[i,j,k])){
-            df.casa =  data.frame(xG.time.casa.m = xG.data$xG[i],
-                                  xGC.time.fora.m = xG.data$xGC[j],
-                                  
+            df.casa =  data.frame(xG.pre = xG.data$xG[i],
+                                  xGC.adv.pre = xG.data$xGC[j],
+                                  xG.adv.pre = xG.data$xG[j],
+                                  xGC.pre = xG.data$xGC[i],
                                   Casa = times[i],
-                                  Fora = times[j])
-            poisson.casa = exp(predict(lm.Gol.Casa,df.casa))
-            df.fora =  data.frame(xG.time.fora.m = xG.data$xG[j],
-                                  xGC.time.casa.m = xG.data$xGC[i],
-                                
+                                  Fora = times[j],
+                                  Mando = 'Casa')
+            p.casa = exp(predict(lm.Gol.Casa,df.casa))
+            df.fora =  data.frame(xG.adv.pre = xG.data$xG[i],
+                                  xGC.pre = xG.data$xGC[j],
+                                  xG.pre = xG.data$xG[j],
+                                  xGC.adv.pre = xG.data$xGC[i],
+                                  Fora = times[j],
                                   Casa = times[i],
-                                  Fora = times[j])
-            poisson.fora = exp(predict(lm.Gol.Fora,df.fora))
+                                  Mando = 'Fora')
+            p.fora = exp(predict(lm.Gol.Fora,df.fora))
             
            
             #prob.casa = ppois(quantiles,poisson.casa)
