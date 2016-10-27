@@ -6,14 +6,15 @@ box.sim <- function(peso.btm, btm, xG, rodadas){
   medias = new[1:20,]
   medias = medias[order(medias$media, decreasing = T),]
   medias$group[1] = 'C'
-  medias$group[2:4] = 'G'
-  medias$group[5:16] = 'N'
+  medias$group[2:3] = 'G'
+  medias$group[4:6] = 'H'
+  medias$group[7:16] = 'N'
   medias$group[17:20] = 'Z'
   medias = medias[order(medias$Equipe),]
   
   new$group = rep(medias$group,nrow(btm)/20)
   
-  paleta = c("slategrey","dodgerblue2","snow2","lightcoral")
+  paleta = c("khaki","dodgerblue2",'slategrey',"snow2","lightcoral")
   
   subt = paste("Número de campeonatos simulados:",(nrow(btm)/20),sep=" ")
   titt = paste("Projeção da Tabela de Classificação após", 

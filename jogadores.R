@@ -44,17 +44,18 @@ jogadores <- function(dados, model, rodadas, threshold,
   best.players$xG.Jogo = best.players$xG/best.players$Jogos
   best.players = arrange(best.players,desc(xG.Jogo))
   
-  best.players$chutes = 1.1*best.players$chutes
+ # best.players$chutes = 1.1*best.players$chutes
+ 
   #best.players[1:5, ]
   ##GGPLOT
-  b = paste('Players',"'", sep="")
-  b = paste(b,'xG per match', sep =' ')
-  finalizadores.jogo = ggplot(best.players[1:30,], aes(x=reorder(jogador,xG.Jogo), y=xG.Jogo))+
+  #b = paste('Players',"'", sep="")
+  #b = paste(b,'xG per match', sep =' ')
+  finalizadores.jogo = ggplot(best.players[1:27,], aes(x=reorder(jogador,xG.Jogo), y=xG.Jogo))+
     geom_bar(stat = "identity",alpha=0.85,width=.3,fill = 'dodgerblue4')+
     coord_flip()+
     theme_classic()+
-    labs(title = b, x = "",y = 'xG per match played',
-         subtitle = 'Penalties were not considered')+
+    labs(title = 'xG de jogadores por partida', x = "",y = 'xG por partida jogada',
+         subtitle = 'Pênaltis não foram considerados')+
     theme(legend.position="none",
           axis.line.y = element_line(
             colour = "white"),

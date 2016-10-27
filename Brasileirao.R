@@ -1,4 +1,4 @@
-rodadas = 30
+rodadas = 32
 type = 'bayes.glm'
 source("simulacao.R")
 source("simplot.R")
@@ -104,8 +104,8 @@ bayes.xG=bayesglm(Gol~ .,
 #models = projecao.gol(rodadas = rodadas, type = 'bayes.glm', peso = 0)
 model = bayes.xG
 campeonato = xGtimes(dados = xG.chutes, model = model, rodadas = rodadas, 
-                     rodada.inicial = 1,threshold = threshold, 
-                     type = 'bayes.glm', momentum = 5, peso = .25)
+                     rodada.inicial = 19,threshold = threshold, 
+                     type = 'bayes.glm', momentum = 5, peso = 0)
 campeonato$xG.plot
 campeonato$xGC.plot
 
@@ -201,18 +201,19 @@ campeonato$xG.ratio.Casa
 campeonato$xG.ratio.Fora
 campeonato$xG.ratio.mando
 
-png("Plot3.png", width = 8, height = 8, units = 'in', res = 500)
-plot(campeonato$xG.plot) # Make plot
+png("AxSG.png", width = 6.5, height = 8, units = 'in', res = 500)
+plot(xSG) # Make plot
 dev.off()
 
 # xG Jogadores -----
 source('jogadores.R')
+
 players = jogadores(dados = xG.chutes, model = model, rodadas = rodadas, threshold = threshold, 
-                    type = 'bayes.glm', njogadores =35)
+                    type = 'bayes.glm', njogadores =20)
 players$xG.chute
 
 players$Finalizadores.jogo
-tplayers$Finalizadores.chute
+players$Finalizadores.chute
 players$xG.gol
 players$xG.chute
 players$Passadores
@@ -223,7 +224,7 @@ players$Participacao
 xgplayers = players$best.players
 xaplayers = players$best.pass
 
-png("xGfin.png", width = 10, height = 7.5, units = 'in', res = 500)
+png("APlot3.png", width = 7.5, height = 7.5, units = 'in', res = 500)
 plot(players$xG.chute) # Make plot
 dev.off()
 
@@ -236,10 +237,10 @@ plot(players$Passadores) # Make plot
 dev.off()
 
 # campeonato e relacao xG -----
-bra16 = br16(rodadas = rodadas, rodada.inicial = 1)
-campeonato = xGtimes(dados = xG.chutes, model = model, rodadas = rodadas, 
+bra16 = br16(rodadas = 31, rodada.inicial = 1)
+campeonato = xGtimes(dados = xG.chutes, model = model, rodadas = 31, 
                      rodada.inicial = 1,threshold = threshold, type = 'bayes.glm', momentum = 0, 
-                     peso = .5)
+                     peso = 0)
 
 source('correlacao.R')
 
@@ -256,8 +257,8 @@ png("Plot3.png", width = 7.5, height = 7.5, units = 'in', res = 500)
 plot(graficos.xG$xG) # Make plot
 dev.off()
 
-png("defenseeff.jpg", width = 7, height = 7, units = 'in', res = 500)
-plot(graficos.xG$chutes.golsC) # Make plot
+png("APlot3.png", width = 8, height = 7, units = 'in', res = 500)
+plot(graficos.xG$chutes.gols) # Make plot
 dev.off()
 
 # BRASIL -----
@@ -324,9 +325,9 @@ bra16 = br16(rodadas = rodadas)
 casa = bra16$jogos[bra16$jogos$Rodada == rodadas,]
 casa = as.character(casa$Casa)
 
-casa = c('Figueirense')
-jogoxG = jogo.xG(data = xG.chutes, model = model, rodada = 29, 
-                 casa = casa, type = 'bayes.glm', tempo = T)
+casa = c('Palmeiras')
+jogoxG = jogo.xG(data = xG.chutes, model = model, rodada = 32, 
+                 casa = casa, type = 'bayes.glm', tempo = TRUE)
 jogoxG$plots.tempo
 
 if (jogoxG$njogos > 1){
@@ -362,9 +363,9 @@ fora = as.character(fora$Fora)
 
 
 source('modeloPdG.R')
-rodadas = 30
+rodadas = 31
 
-models = projecao.gol(rodadas = (rodadas-1), type = 'bayes.glm', peso = .7, casa = F)
+models = projecao.gol(rodadas = 32, type = 'bayes.glm', peso = .5, casa = F)
 
 
 casa = c('Palmeiras','Atlético MG','Ponte Preta','Fluminense','São Paulo','Grêmio')
@@ -502,15 +503,13 @@ dev.off()
 
 # SIMULACAO -----
 source('simplot.R')
-sim = simulacao(rodadas = rodadas, nsimulacoes = 500, 
+sim = simulacao(rodadas = rodadas, nsimulacoes = 7000, 
                 m.btm = 6, m.xG = 6,
-                peso.momentum = .35, type= 'bayes.glm', models = models)
-sim35 
-sim65
-sim50
-sim0 = sim
-plotsim = plot.sim(rodadas = rodadas, nsimulacoes = 1000, 
-         peso.btm = .3, 
+                peso.momentum = .5, type= 'bayes.glm', models = models)
+
+sim50 = sim
+plotsim = sim.plot(rodadas = rodadas, nsimulacoes = 7000, 
+         peso.btm = 0, 
          sim.btm16 = sim$sim.btm16, sim.xG = sim$sim.xG)
 plotsim$Box
 plotsim$Mapa
@@ -521,16 +520,19 @@ plotsim$Z4
 plotsim$posicoes
 plotsim$pontos
 
-png("Plot3.png", width = 7, height = 8, units = 'in', res = 450)
+png("APlot3.png", width = 7, height = 8, units = 'in', res = 450)
 plot(plotsim$G4) # Make plot
 dev.off()
 
-png("Plot3.png", width = 7.5, height = 7.5, units = 'in', res = 450)
+png("APlot3.png", width = 7, height = 8.5, units = 'in', res = 450)
+plot(plotsim$Box) # Make plot
+dev.off()
+
+png("APlot3.png", width = 7.5, height = 6.5, units = 'in', res = 450)
 plot(plotsim$Campeoes) # Make plot
 dev.off()
 
-png("Plot3.png", width = 6.5, height = 8, units = 'in', res = 450)
+png("APlot3.png", width = 6.5, height = 8.5, units = 'in', res = 450)
 plot(campeonato$xG.plot) # Make plot
 dev.off()
-
 

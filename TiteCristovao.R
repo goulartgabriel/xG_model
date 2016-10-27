@@ -1,12 +1,29 @@
-cristovao.xG = xGtimes(dados = xG.chutes, model = model, 
-                     rodada.inicial = 10, rodadas = rodadas, threshold = threshold,type = 'bayes.glm')
+jesus.xG = xGtimes(dados = xG.chutes, model = model, 
+                     rodada.inicial = 1, rodadas = 13, threshold = threshold,type = 'bayes.glm')
+
 
 tite.xG = xGtimes(dados = xG.chutes, model = model, 
-                       rodada.inicial = 1, rodadas = 8, threshold = threshold, type = 'bayes.glm')
+                       rodada.inicial = 14, rodadas = 14, threshold = threshold, type = 'bayes.glm')
 
-cristovao.xG$xG.data[cristovao.xG$xG.data$equipes == 'Corinthians',]
 
-tite.xG$xG.data[tite.xG$xG.data$equipes == 'Corinthians',]
+
+jesus.xG$xG.data[jesus.xG$xG.data$equipes == 'Palmeiras',]*13
+
+
+tite.xG$xG.data[tite.xG$xG.data$equipes == 'Palmeiras',]
+
+
+jesus.xG = (j1$xG + j2$xG +j3$xG+j4$xG+j5$xG)/22
+jesus.xGC = (j1$xGC + j2$xGC +j3$xGC+j4$xGC+j5$xGC)/22
+t.xG = (t1$xG+t2$xG+t3$xG+t4$xG)/9
+t.xGC = (t1$xGC+t2$xGC+t3$xGC+t4$xGC)/9
+
+#jogos.jesus = c(seq(1:13),15,seq(from = 22, to = 25),27,28,30,31)
+#jogos.t = c(14,seq(from = 16, to = 21),26,29)
+
+jogos.jesus = c(seq(from = 22, to = 25),27,28,30,31)
+jogos.t = c(seq(from = 16, to = 21),26,29)
+
 
 tite.xG = 0
 tite.xGC = 0
@@ -16,16 +33,18 @@ tite.chutes = 0
 tite.passesr = 0
 tite.passes = 0
 tite.pontos = 0
-for (i in 1:8){
+i = 0
+for (k in jogos.t){
+  i = i+1
   tite = xGtimes(dados = xG.chutes, model = model, 
-                    rodada.inicial = i, rodadas = i, threshold = threshold, type = 'bayes.glm')
-  tite = tite$xG.data[tite$xG.data$equipes == 'Corinthians',]
+                    rodada.inicial = k, rodadas = k, threshold = threshold, type = 'bayes.glm')
+  tite = tite$xG.data[tite$xG.data$equipes == 'Palmeiras',]
   tite.xG[i] = tite$xG
   tite.xGC[i] = tite$xGC
   
-  titebr = br16(rodadas = i, rodada.inicial = i)
+  titebr = br16(rodadas = k, rodada.inicial = k)
   titebr = titebr$classificacao
-  titebr = titebr[titebr$Times == 'Corinthians',]
+  titebr = titebr[titebr$Times == 'Palmeiras',]
   tite.gols[i] = titebr$Gols.Pro
   tite.golsC[i] = titebr$Gols.Contra
   tite.chutes[i] = titebr$Chutes.Certos + titebr$Chutes.Errados
@@ -42,27 +61,28 @@ c.chutes = 0
 c.passes = 0
 c.passesr = 0
 c.pontos = 0
-for (i in 10:26){
-  print(i)
+i = 0
+for (k in jogos.jesus){
+  i = i+1
   c = xGtimes(dados = xG.chutes, model = model, 
-                 rodada.inicial = i, rodadas = i, threshold = threshold, type = 'bayes.glm')
-  c = c$xG.data[c$xG.data$equipes == 'Corinthians',]
-  c.xG[i-9] = c$xG
-  c.xGC[i-9] = c$xGC
+                 rodada.inicial = k, rodadas = k, threshold = threshold, type = 'bayes.glm')
+  c = c$xG.data[c$xG.data$equipes == 'Palmeiras',]
+  c.xG[i] = c$xG
+  c.xGC[i] = c$xGC
   
-  titebr = br16(rodadas = i, rodada.inicial = i)
+  titebr = br16(rodadas = k, rodada.inicial = k)
   titebr = titebr$classificacao
-  titebr = titebr[titebr$Times == 'Corinthians',]
-  c.gols[i-9] = titebr$Gols.Pro
-  c.golsC[i-9] = titebr$Gols.Contra
-  c.chutes[i-9] = titebr$Chutes.Certos + titebr$Chutes.Errados
-  c.passesr[i-9] = titebr$Passes.Ratio
-  c.passes[i-9] = titebr$Passes.Certos
-  c.pontos[i-9] = titebr$Pontuacao
+  titebr = titebr[titebr$Times == 'Palmeiras',]
+  c.gols[i] = titebr$Gols.Pro
+  c.golsC[i] = titebr$Gols.Contra
+  c.chutes[i] = titebr$Chutes.Certos + titebr$Chutes.Errados
+  c.passesr[i] = titebr$Passes.Ratio
+  c.passes[i] = titebr$Passes.Certos
+  c.pontos[i] = titebr$Pontuacao
 }
 
 
-df = data.frame(Tecnico = c(rep('Tite',8),rep('Cristóvão',17)),
+df = data.frame(Tecnico = c(rep('Sem Jesus',length(jogos.t)),rep('Com Jesus',length(jogos.jesus))),
                 Pontos = c(tite.pontos,c.pontos),
                 xG = c(tite.xG,c.xG),
                 xGC = c(tite.xGC,c.xGC),
@@ -74,11 +94,11 @@ df = data.frame(Tecnico = c(rep('Tite',8),rep('Cristóvão',17)),
                 
                 
                 )
-cols<-c("purple4", "gray88")
+cols<-c("#0D7A52", "gray88")
 
 t.test(df$Pontos~df$Tecnico)
-df$legenda[1:8] = 'Média pontos = 1.63'
-df$legenda[9:25] = 'Média pontos = 1.47'
+df$legenda[1:9] = 'Média pontos = 1.67'
+df$legenda[10:31] = 'Média pontos = 2.22'
 pontos = ggplot(df, aes(x=Tecnico, y = Pontos, fill = legenda))+
   geom_violin(alpha=0.7)+
   geom_jitter(width=0.25, height=0.05)+
@@ -111,21 +131,21 @@ plot(pontos) # Make plot
 dev.off()
 
 t.test(df$xG~df$Tecnico)
-df$legenda[1:8] = 'Média xG = 1.57'
-df$legenda[9:25] = 'Média xG = 1.32'
+df$legenda[1:9] = 'Média xG = 1.58'
+df$legenda[10:31] = 'Média xG = 1.75'
 
 xG = ggplot(df, aes(x=Tecnico, y = xG, fill = legenda))+
   geom_violin(alpha=0.7)+
   geom_jitter(width=0.25, height=0.05)+
   coord_flip()+
   theme_minimal()+
-  guides(fill = guide_legend(reverse=T, title = NULL))+
+  guides(fill = guide_legend(reverse=F, title = NULL))+
   scale_fill_manual(values=cols)+
   xlab("")+
   ylab("xG")+
   theme(#plot.title = element_text(vjust = 0.1),
     text=element_text(family="Avenir Next Condensed"))+
-  labs(title = "Corinthians com Tite possuia maior média de xG",
+  labs(title = "xG do Palmeiras com e sem Gabriel Jesus",
        subtitle='Pontos representam jogos')+
   theme(plot.title = element_text(family="Avenir Next Condensed", color = "gray26",
                                   size=17, hjust=0.5, vjust=-1),
@@ -137,10 +157,10 @@ xG = ggplot(df, aes(x=Tecnico, y = xG, fill = legenda))+
         axis.title.x=element_text(size=13.5, color = 'gray26'))+
   annotate("text", label = "@ProjecaoDeGol", 
            x = 0.5, y = .75, size = 4.5, colour = "gray34",
-           family="Avenir Next Condensed")
+           family="Avenir Next Condensed", fontface = 'italic')
 xG  
 
-png("CXG.png", width = 8, height = 6, units = 'in', res = 400)
+png("AXG.png", width = 8, height = 6, units = 'in', res = 400)
 plot(xG) # Make plot
 dev.off()
 
@@ -182,8 +202,8 @@ dev.off()
 
 
 t.test(df$Gols~df$Tecnico)
-df$legenda[1:8] = 'Média de gols = 1.25'
-df$legenda[9:25] = 'Média de gols = 1.29'
+df$legenda[1:9] = 'Média de gols = 1.25'
+df$legenda[10:31] = 'Média de gols = 1.29'
 Gols = ggplot(df, aes(x=Tecnico, y = Gols, fill = legenda))+
   geom_violin(alpha=0.7)+
   geom_jitter(width=0.25, height=0.05)+

@@ -1,4 +1,4 @@
-plot.sim <- function(rodadas, nsimulacoes, peso.btm, sim.btm16, sim.xG){
+sim.plot <- function(rodadas, nsimulacoes, peso.btm, sim.btm16, sim.xG){
   source("br16.R")
   source("boxsim.R")
   bra16 = br16(rodadas = rodadas)
@@ -185,8 +185,8 @@ plot.sim <- function(rodadas, nsimulacoes, peso.btm, sim.btm16, sim.xG){
   rownames(posZ4) = NULL
   posZ4 = posZ4[,17:20]
   posZ4 = rowSums(posZ4)
-  times = times[which(posZ4 >50)]
-  posZ4 = posZ4[which(posZ4 >50)]
+  times = times[which(posZ4 >20)]
+  posZ4 = posZ4[which(posZ4 >20)]
   times = times[order(posZ4,decreasing = T)]
   posZ4 = posZ4[order(posZ4,decreasing = T)]
   posZ4 = posZ4/nsimulacoes
@@ -197,7 +197,7 @@ plot.sim <- function(rodadas, nsimulacoes, peso.btm, sim.btm16, sim.xG){
                      rank = seq(1:length(posZ4)))
   
   df.Z4 = cores(df.Z4)
-  df.Z4 = df.Z4[df.Z4$chance > 2, ]
+  df.Z4 = df.Z4[df.Z4$chance > 1, ]
   titt = paste("Projeção de rebaixamento após", 
                rodadas,"rodadas",sep=" ")
   subt = paste("Número de campeonatos simulados:",(nsimulacoes),sep=" ")

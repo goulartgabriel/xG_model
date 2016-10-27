@@ -5,8 +5,9 @@ simulacao.xG <- function(rodadas, nsimulacoes, type, momentum, peso, limitado = 
   source("newresultadoscasa.R")
   library(rpart)
   library(rpart.plot)
-  source("lmgol.R")
+  source("modeloPdG.R")
   library('plyr')
+  source('probabilidades.R')
   #SETUP ------
   bra16 = br16(rodadas = rodadas)
   times = levels(bra16$classificacao$Times)
@@ -75,28 +76,22 @@ simulacao.xG <- function(rodadas, nsimulacoes, type, momentum, peso, limitado = 
                                   Mando = 'Fora')
             p.fora = exp(predict(lm.Gol.Fora,df.fora))
             
-           
-            #prob.casa = ppois(quantiles,poisson.casa)
-            #prob.fora = ppois(quantiles,poisson.fora)
+#             
+#             gol.casa = rpois(1,poisson.casa)
+#             gol.fora = rpois(1,poisson.fora)
+#             
+            probs = probabilidades(p.casa,p.fora)/100
+            probs$Empate = probs$Casa+probs$Empate
+            random = runif(1)
             
-            gol.casa = rpois(1,poisson.casa)
-            gol.fora = rpois(1,poisson.fora)
             
-            if (gol.casa > gol.fora){
+            if (random < probs$Casa){
               matriz.jogos[i,j,k] = 2 }
-            if (gol.casa == gol.fora ){
-              gol.casa2 = rpois(1,poisson.casa)
-              gol.fora2 = rpois(1,poisson.fora)
-              if (gol.casa2 > gol.fora2){
-                matriz.jogos[i,j,k] = 2 }
-              if (gol.casa2 == gol.fora2 ){
-                matriz.jogos[i,j,k] = 1
-              }
-              if (gol.fora2 > gol.casa2){
-                matriz.jogos[i,j,k] = 0
-              }
+            if (random > probs$Casa & random < probs$Empate){
+              matriz.jogos[i,j,k] = 1
+              
             }
-            if (gol.fora > gol.casa){
+            if (random > probs$Empate){
               matriz.jogos[i,j,k] = 0
             }
             

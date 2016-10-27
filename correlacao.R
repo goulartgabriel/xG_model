@@ -181,7 +181,8 @@ correlacao <- function(xG.campeonato, tabela){
 # Chutes e Gols Pro ------
   mediana.y = median(correlation.data$Gols.chute)
   mediana.x = median(correlation.data$Chutes)
-  title.att = paste('Eficiência de ataque do Brasileirão até a ',rodadas, 'ª rodada',sep = '')
+ # title.att = paste('Eficiência de ataque do Brasileirão até a ',rodadas, 'ª rodada',sep = '')
+  title.att = paste('Eficiência de ataque do 2º turno do Brasileirão')
       Chutes.gols = ggplot(correlation.data, aes(y = Gols.chute, x = Chutes, label = Equipe,
                                                   colour = paletta))+
     geom_text_repel(family = 'Avenir', colour = 'gray26')+
@@ -199,8 +200,8 @@ correlacao <- function(xG.campeonato, tabela){
           axis.ticks.y = element_line(color="white"),
           axis.text.x = element_text(size = 12, color = 'gray26'),
           axis.text.y = element_text(size = 12, color = 'gray26'),
-          axis.title.y=element_text(size=12, color = 'gray26'),
-          axis.title.x=element_text(size=12, color = 'gray26'),
+          axis.title.y=element_text(size=14, color = 'gray26'),
+          axis.title.x=element_text(size=14, color = 'gray26'),
           panel.grid.major = element_line(colour = "gray26",size = .03),
           panel.grid.minor = element_line(colour = "gray26",
                                           linetype = 'dashed',size = .045))+
@@ -211,9 +212,9 @@ correlacao <- function(xG.campeonato, tabela){
     geom_hline(yintercept = mediana.y, color = 'gray26', size = .25,linetype="dashed")+
     annotate("text", label = "Ameaças constantes", x = 13, y = 7, 
              size = 6, colour = "gray16", family = 'Avenir Next Condensed')+
-    annotate("text", label = "Quietamente precisos", x = 10.3, y = 7, 
+    annotate("text", label = "Quietamente precisos", x = 8.3, y = 7, 
              size = 6, colour = "gray16", family = 'Avenir Next Condensed')+ 
-    annotate("text", label = "Ineficientes", x = 10.3, y = 16.5, 
+    annotate("text", label = "Ineficientes", x = 8.3, y = 16.5, 
              size = 6, colour = "gray16", family = 'Avenir Next Condensed')+ 
     annotate("text", label = "Ativamente ineficientes", x = 13, y = 16.5, 
              size = 6, colour = "gray16", family = 'Avenir Next Condensed')

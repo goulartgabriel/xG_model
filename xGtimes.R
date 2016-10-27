@@ -49,10 +49,10 @@ xGtimes <- function(dados, model, threshold, rodadas, rodada.inicial = 1, type, 
   df.xg = df.xg[order(-df.xg$xG.jogo),]
   df.xg$rank = as.numeric(seq(20:1))
   df.xg$paleta = 0
-  df.xg$paleta[which(df.xg$xG.jogo > 1.425)] = '0'
-  df.xg$paleta[which(df.xg$xG.jogo > 1.25 & df.xg$xG.jogo <= 1.425)] = '2'
-  df.xg$paleta[which(df.xg$xG.jogo > 1.1 & df.xg$xG.jogo <= 1.25)] = '3'
-  df.xg$paleta[which(df.xg$xG.jogo < 1.1)] = '4'
+  df.xg$paleta[which(df.xg$xG.jogo > 1.46)] = '0'
+  df.xg$paleta[which(df.xg$xG.jogo > 1.35 & df.xg$xG.jogo <= 1.46)] = '2'
+  df.xg$paleta[which(df.xg$xG.jogo > 1.05 & df.xg$xG.jogo <= 1.35)] = '3'
+  df.xg$paleta[which(df.xg$xG.jogo < 1.05)] = '4'
   
   paleta = c("steelblue4","skyblue3","gray67","firebrick3")
 
@@ -78,14 +78,14 @@ xGtimes <- function(dados, model, threshold, rodadas, rodada.inicial = 1, type, 
           axis.text.y = element_text(size = 12.8),
           axis.text.x = element_text(size = 12, color = 'gray26'),
           axis.title.x=element_text(size=12, color = 'gray26'),
-          text=element_text(family="Avenir"),
-         plot.title = element_text(family="Avenir", color = "gray26",
+          text=element_text(family="Avenir Next Condensed"),
+         plot.title = element_text(family="Avenir Next Condensed", color = "gray26",
                                    size=17, hjust=0.5, vjust=-1),
          panel.grid.major = element_line(colour = "gray26",size = .03),
          panel.grid.minor = element_line(colour = "gray26",
                                          linetype = 'dashed',size = .045))+
     annotate("text", label = "@ProjecaoDeGol", x = 1.2, y = 1.6, 
-             size = 3.7, colour = "gray34",family="Avenir", fontface = 'italic')   
+             size = 3.7, colour = "gray34",family="Avenir Next Condensed", fontface = 'italic')   
     
   xG.plot
   
@@ -126,8 +126,8 @@ xGtimes <- function(dados, model, threshold, rodadas, rodada.inicial = 1, type, 
           axis.text.y = element_text(size = 12.8),
           axis.text.x = element_text(size = 12, color = 'gray26'),
           axis.title.x=element_text(size=12, color = 'gray26'),
-          text=element_text(family="Avenir"),
-          plot.title = element_text(family="Avenir", color = "gray26",
+          text=element_text(family="Avenir Next Condensed"),
+          plot.title = element_text(family="Avenir Next Condensed", color = "gray26",
                                     size=17, hjust=0.5, vjust=-1))
   
   xGC.plot
@@ -138,7 +138,7 @@ xGtimes <- function(dados, model, threshold, rodadas, rodada.inicial = 1, type, 
   expSG = exp.gol - exp.golC
   dat2 <- data.frame(
     equipes = factor(c(times)),
-    xSG.jogo = expSG/rodadas,  
+    xSG.jogo = expSG,  
     xSG.total = expSG
   )
   dat2 = dat2[order(-dat2$xSG.jogo),]
@@ -150,7 +150,7 @@ xGtimes <- function(dados, model, threshold, rodadas, rodada.inicial = 1, type, 
   dat2$paleta[which(dat2$xSG.jogo > -0.4 & dat2$xSG.jogo <= 0)] = '3'
   dat2$paleta[which(dat2$xSG.jogo < -0.4)] = '4'
   
-  paleta.SG = c("mediumpurple4","skyblue4","snow3","firebrick3")
+  paleta.SG = c("darkslategrey","skyblue4","snow3","firebrick3")
   
   xSG = ggplot(dat2, aes(x=reorder(equipes,xSG.jogo),y=xSG.jogo,fill=paleta))+
     geom_bar(stat = "identity",alpha=0.85,width=.09)+
@@ -171,13 +171,13 @@ xGtimes <- function(dados, model, threshold, rodadas, rodada.inicial = 1, type, 
           axis.text.y = element_text(size = 12.8),
           axis.text.x = element_text(size = 12, color = 'gray26'),
           axis.title.x=element_text(size=12, color = 'gray26'),
-          text=element_text(family="Avenir"),
-          plot.title = element_text(family="Avenir", color = "gray26" ),
+          text=element_text(family="Avenir Next Condensed"),
+          plot.title = element_text(family="Avenir Next Condensed", color = "gray26", hjust=0.5, vjust=-1, size = 17),
           panel.grid.major = element_line(colour = "gray26",size = .03),
           panel.grid.minor = element_line(colour = "gray26",
                                          linetype = 'dashed',size = .045))+
     annotate("text", label = "@ProjecaoDeGol", x = 1.2, y = 0.89*max(dat2$xSG.jogo), 
-             size = 3.7, colour = "gray34",family="Avenir") 
+             size = 3.7, colour = "gray34",family="Avenir Next Condensed",fontface = 'italic') 
   
   
   ##MANDO DE CAMPO--------
@@ -237,7 +237,7 @@ xG.times = xG.times[order(xG.times$equipes),]
 
 
   newList <- list('xG.data' = xG.times, 'xG.plot' = xG.plot, 
-                  'xGC.plot' = xGC.plot,'df' = df.xg
+                  'xGC.plot' = xGC.plot,'df' = df.xg,'xSG' = xSG
                  
                   )
   

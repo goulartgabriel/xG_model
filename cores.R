@@ -23,8 +23,8 @@ cores <- function(dataframe){
       #dataframe$paletta[i] = "#424242"
     }
     if(dataframe$Equipe[i] == 'Flamengo'){
-      #dataframe$paletta[i] = "firebrick"
-      dataframe$paletta[i] = "#D14141"
+      dataframe$paletta[i] = "firebrick"
+     # dataframe$paletta[i] = "#87313C"
       
     }
     if(dataframe$Equipe[i] == 'Atlético PR'){
@@ -48,7 +48,7 @@ cores <- function(dataframe){
       dataframe$paletta[i] = "lightsalmon4"
     }
     if(dataframe$Equipe[i] == 'Botafogo'){
-      dataframe$paletta[i] = "gray36"
+      dataframe$paletta[i] = "gray16"
     }
     if(dataframe$Equipe[i] == 'Internacional'){
       dataframe$paletta[i] = "indianred2"
