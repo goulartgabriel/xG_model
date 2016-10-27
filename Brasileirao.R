@@ -46,6 +46,7 @@ source("probabilidades.R")
 source("projecaopontos.R")
 source("modeloPdG.R")
 source('simplot.R')
+source('mapacalor.R')
 
 # SETUP xG ------
 
@@ -237,8 +238,8 @@ plot(players$Passadores) # Make plot
 dev.off()
 
 # campeonato e relacao xG -----
-bra16 = br16(rodadas = 31, rodada.inicial = 1)
-campeonato = xGtimes(dados = xG.chutes, model = model, rodadas = 31, 
+bra16 = br16(rodadas = 32, rodada.inicial = 1)
+campeonato = xGtimes(dados = xG.chutes, model = model, rodadas = 32, 
                      rodada.inicial = 1,threshold = threshold, type = 'bayes.glm', momentum = 0, 
                      peso = 0)
 
@@ -319,6 +320,10 @@ jogoxG$plots.tempo
 png("Colombia.png", width = 8, height = 7, units = 'in', res = 400)
 plot(jogoxG$plots.tempo[[1]])# Make plot
 dev.off()
+
+# Mapa Calor -----
+mapa = mapa.de.calor(xG.chtues)
+mapa
 
 # JOGO XG ------
 bra16 = br16(rodadas = rodadas)
