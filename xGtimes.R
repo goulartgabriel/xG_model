@@ -50,8 +50,8 @@ xGtimes <- function(dados, model, threshold, rodadas, rodada.inicial = 1, type, 
   df.xg$rank = as.numeric(seq(20:1))
   df.xg$paleta = 0
   df.xg$paleta[which(df.xg$xG.jogo > 1.46)] = '0'
-  df.xg$paleta[which(df.xg$xG.jogo > 1.35 & df.xg$xG.jogo <= 1.46)] = '2'
-  df.xg$paleta[which(df.xg$xG.jogo > 1.05 & df.xg$xG.jogo <= 1.35)] = '3'
+  df.xg$paleta[which(df.xg$xG.jogo > 1.31 & df.xg$xG.jogo <= 1.46)] = '2'
+  df.xg$paleta[which(df.xg$xG.jogo > 1.05 & df.xg$xG.jogo <= 1.31)] = '3'
   df.xg$paleta[which(df.xg$xG.jogo < 1.05)] = '4'
   
   paleta = c("steelblue4","skyblue3","gray67","firebrick3")
@@ -99,9 +99,9 @@ xGtimes <- function(dados, model, threshold, rodadas, rodada.inicial = 1, type, 
   df.xgc$rank = as.numeric(seq(20:1))
   df.xgc$paleta = 0
   df.xgc$paleta[which(df.xgc$xGC.jogo > 1.4)] = '0'
-  df.xgc$paleta[which(df.xgc$xGC.jogo > 1.2 & df.xgc$xGC.jogo < 1.4)] = '1'
-  df.xgc$paleta[which(df.xgc$xGC.jogo > 1.1 & df.xgc$xGC.jogo <= 1.2)] = '2'
-  df.xgc$paleta[which(df.xgc$xGC.jogo < 1.1)] = '4'
+  df.xgc$paleta[which(df.xgc$xGC.jogo > 1.17 & df.xgc$xGC.jogo < 1.4)] = '1'
+  df.xgc$paleta[which(df.xgc$xGC.jogo > 1.04 & df.xgc$xGC.jogo <= 1.17)] = '2'
+  df.xgc$paleta[which(df.xgc$xGC.jogo < 1.04)] = '4'
   
   paleta2 = rev(c("steelblue4","skyblue3","gray67","firebrick3"))
   
@@ -145,8 +145,8 @@ xGtimes <- function(dados, model, threshold, rodadas, rodada.inicial = 1, type, 
   dat2$rank = as.factor(seq(20:1))
   
   dat2$paleta = 0
-  dat2$paleta[which(dat2$xSG.jogo > 0.4)] = '0'
-  dat2$paleta[which(dat2$xSG.jogo > 0 & dat2$xSG.jogo <= 0.4)] = '2'
+  dat2$paleta[which(dat2$xSG.jogo > 0.41)] = '0'
+  dat2$paleta[which(dat2$xSG.jogo > 0 & dat2$xSG.jogo <= 0.41)] = '2'
   dat2$paleta[which(dat2$xSG.jogo > -0.4 & dat2$xSG.jogo <= 0)] = '3'
   dat2$paleta[which(dat2$xSG.jogo < -0.4)] = '4'
   

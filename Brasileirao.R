@@ -1,4 +1,4 @@
-rodadas = 32
+rodadas = 33
 type = 'bayes.glm'
 source("simulacao.R")
 source("simplot.R")
@@ -104,11 +104,14 @@ bayes.xG=bayesglm(Gol~ .,
 
 #models = projecao.gol(rodadas = rodadas, type = 'bayes.glm', peso = 0)
 model = bayes.xG
-campeonato = xGtimes(dados = xG.chutes, model = model, rodadas = rodadas, 
-                     rodada.inicial = 19,threshold = threshold, 
+source('xGtimes.R')
+campeonato = xGtimes(dados = xG.chutes, model = model, rodadas = 19, 
+                     rodada.inicial = 1,threshold = threshold, 
                      type = 'bayes.glm', momentum = 5, peso = 0)
 campeonato$xG.plot
 campeonato$xGC.plot
+campeonato$xSG
+campeonato$xG.data
 
 ## Naive Bayes -----
 naive=naiveBayes(Gol~.,data=xG.chutes[ , (names(xG.chutes) %in% c('Gol',
@@ -121,6 +124,7 @@ naive=naiveBayes(Gol~.,data=xG.chutes[ , (names(xG.chutes) %in% c('Gol',
 
 model = naive
 b = predict(model,xG.chutes, type = 'raw')
+source('xGtimes.R')
 campeonato = xGtimes(dados = xG.chutes, model = model, rodadas = rodadas, 
                      rodada.inicial = 1,threshold = threshold, 
                      type = 'naive', momentum = 0, peso = .65)
@@ -202,8 +206,8 @@ campeonato$xG.ratio.Casa
 campeonato$xG.ratio.Fora
 campeonato$xG.ratio.mando
 
-png("AxSG.png", width = 6.5, height = 8, units = 'in', res = 500)
-plot(xSG) # Make plot
+png("AxGC.png", width = 6.5, height = 8, units = 'in', res = 500)
+plot(campeonato$xGC.plot) # Make plot
 dev.off()
 
 # xG Jogadores -----
@@ -238,9 +242,9 @@ plot(players$Passadores) # Make plot
 dev.off()
 
 # campeonato e relacao xG -----
-bra16 = br16(rodadas = 32, rodada.inicial = 1)
-campeonato = xGtimes(dados = xG.chutes, model = model, rodadas = 32, 
-                     rodada.inicial = 1,threshold = threshold, type = 'bayes.glm', momentum = 0, 
+bra16 = br16(rodadas = 33, rodada.inicial = 20)
+campeonato = xGtimes(dados = xG.chutes, model = model, rodadas = 33, 
+                     rodada.inicial = 20,threshold = threshold, type = 'bayes.glm', momentum = 0, 
                      peso = 0)
 
 source('correlacao.R')
@@ -258,8 +262,8 @@ png("Plot3.png", width = 7.5, height = 7.5, units = 'in', res = 500)
 plot(graficos.xG$xG) # Make plot
 dev.off()
 
-png("APlot3.png", width = 8, height = 7, units = 'in', res = 500)
-plot(graficos.xG$chutes.gols) # Make plot
+png("AchutesC.png", width = 8, height = 7, units = 'in', res = 500)
+plot(Chutes.golsC) # Make plot
 dev.off()
 
 # BRASIL -----
@@ -321,7 +325,7 @@ png("Colombia.png", width = 8, height = 7, units = 'in', res = 400)
 plot(jogoxG$plots.tempo[[1]])# Make plot
 dev.off()
 
-# Mapa Calor -----
+# MAPA CALOR -----
 mapa = mapa.de.calor(xG.chtues)
 mapa
 
